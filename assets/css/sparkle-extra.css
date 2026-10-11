@@ -1,0 +1,113 @@
+/* ==========================================================================
+   SPARKLE EXTRA - hiệu ứng blink blink thêm vào (chỉ dùng box-shadow / filter /
+   background, KHÔNG đổi kích thước hay vị trí, KHÔNG đụng transform của các
+   phần tử ScrollReveal nên không làm lỗi bố cục). Xoá file này + 1 dòng <link>
+   trong index.html là về lại như cũ.
+   ========================================================================== */
+
+/* 1. Vòng xanh avatar: toả sáng nhịp nhàng */
+.profile__border { animation: ringGlow 3.2s ease-in-out infinite; }
+@keyframes ringGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(56,189,248,0), 0 0 8px rgba(56,189,248,.25); }
+  50%      { box-shadow: 0 0 18px rgba(255,42,133,.45), 0 0 34px rgba(56,189,248,.45); }
+}
+
+/* 2. Tích xanh xác minh lấp lánh */
+.profile__name svg { animation: badgeTwinkle 2.6s ease-in-out infinite; }
+@keyframes badgeTwinkle {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(56,189,248,0)); }
+  50%      { filter: drop-shadow(0 0 7px rgba(56,189,248,.95)); }
+}
+
+/* 3. Social: bay lên + sáng hồng khi hover */
+.profile__social_link { transition: transform .3s ease, filter .3s ease, color .3s ease; }
+.profile__social_link:hover {
+  transform: translateY(-5px) scale(1.18);
+  color: #ff2a85;
+  filter: drop-shadow(0 0 9px rgba(255,42,133,.8));
+}
+
+/* 4. Icon About Me: toả sáng nhẹ xen kẽ cyan / hồng */
+.about__box .icon img { animation: iconBlink 3.4s ease-in-out infinite; }
+.about__box:nth-child(even) .icon img { animation-delay: 1.2s; }
+@keyframes iconBlink {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(0,245,212,0)); }
+  50%      { filter: drop-shadow(0 0 9px rgba(0,245,212,.85)) drop-shadow(0 0 4px rgba(255,42,133,.5)); }
+}
+
+/* 5. Resume: icon tròn đập nhịp như tim */
+.resume__step__icon { animation: stepPulse 2.8s ease-in-out infinite; }
+.resume__step:nth-child(2) .resume__step__icon { animation-delay: .5s; }
+.resume__step:nth-child(3) .resume__step__icon { animation-delay: 1s; }
+@keyframes stepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(56,189,248,.55); }
+  60%      { box-shadow: 0 0 0 9px rgba(56,189,248,0); }
+}
+
+/* 6. Gạch chân tiêu đề mục: ánh sáng chạy qua */
+.about__title, .resume__title, .contact__title {
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.0) 35%, rgba(255,255,255,.0) 65%, transparent 100%);
+}
+.about__title::after, .resume__title::after, .contact__title::after { animation: underlineShine 3s ease-in-out infinite; }
+@keyframes underlineShine {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.7) drop-shadow(0 0 6px rgba(56,189,248,.9)); }
+}
+
+/* 7. Nút gửi Contact: vệt sáng chạy ngang */
+#contact-form .see__more { position: relative; overflow: hidden; }
+#contact-form .see__more::after {
+  content: ""; position: absolute; top: 0; left: -80%; width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-20deg); animation: btnShine 3.6s ease-in-out infinite; pointer-events: none;
+}
+@keyframes btnShine { 0%, 55% { left: -80%; } 100% { left: 160%; } }
+.contact-note i { animation: envelopeBlink 2.2s ease-in-out infinite; }
+@keyframes envelopeBlink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+/* 8. Sao lấp lánh nhỏ rải trên nền (không bấm được, nằm dưới nội dung) */
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    radial-gradient(circle, #fff 0 1.2px, transparent 2px),
+    radial-gradient(circle, #ffb3d9 0 1.2px, transparent 2px),
+    radial-gradient(circle, #9bf6ff 0 1.2px, transparent 2px);
+  background-size: 210px 190px, 290px 260px, 340px 300px;
+  background-position: 20px 40px, 130px 110px, 220px 20px;
+  opacity: .35; animation: bgTwinkle 4.5s ease-in-out infinite alternate;
+}
+@keyframes bgTwinkle { from { opacity: .12; } to { opacity: .5; } }
+body:not(.dark)::before { display: none; }
+
+/* Người dùng tắt hiệu ứng trong máy -> tắt hết cho an toàn */
+@media (prefers-reduced-motion: reduce) {
+  .profile__border, .profile__name svg, .about__box .icon img, .resume__step__icon,
+  .about__title::after, .resume__title::after, .contact__title::after,
+  #contact-form .see__more::after, .contact-note i, body::before { animation: none !important; }
+}
+
+
+/* ===== Video Chikawa chạy nền trong khung THÔNG TIN NỔI BẬT ===== */
+.user-highlight-card .highlight-video-bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.42;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+.user-highlight-card .highlight-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.user-highlight-card > *:not(.highlight-video-bg) {
+  position: relative;
+  z-index: 1;
+}
+.user-highlight-card .highlight-quote-phrase {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}

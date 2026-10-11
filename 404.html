@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found / Không Tìm Thấy Trang</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/img/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="assets/img/favicon/favicon.ico" />
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="assets/css/v6.4.0/css/all.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --hue: 207;
+        --sat: 90%;
+        --lig: 61%;
+        --first-color: hsl(var(--hue), var(--sat), var(--lig));
+        --first-color-alt: hsl(var(--hue), var(--sat), 57%);
+        --second-color: hsl(203, 95%, 77%);
+        
+        /* Light Theme variables default */
+        --body-bg: radial-gradient(circle at 50% 50%, #ffffff 0%, #f0f4f8 100%);
+        --card-bg: rgba(255, 255, 255, 0.7);
+        --card-border: rgba(255, 255, 255, 0.4);
+        --title-color: hsl(var(--hue), 12%, 15%);
+        --text-color: hsl(var(--hue), 12%, 35%);
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --glow-color: rgba(49, 140, 231, 0.2);
+        --back-btn-bg: linear-gradient(135deg, var(--first-color) 0%, var(--first-color-alt) 100%);
+        --back-btn-text: #ffffff;
+      }
+
+      body.dark {
+        --body-bg: radial-gradient(circle at 50% 50%, hsl(calc(var(--hue) + 7), 40%, 8%) 0%, #0a0e14 100%);
+        --card-bg: rgba(10, 14, 20, 0.6);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --title-color: hsl(var(--hue), 12%, 95%);
+        --text-color: hsl(var(--hue), 12%, 75%);
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --glow-color: rgba(49, 140, 231, 0.4);
+        --back-btn-bg: linear-gradient(135deg, var(--first-color) 0%, var(--second-color) 100%);
+        --back-btn-text: #0a0e14;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--body-bg);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+        transition: background 0.5s ease, color 0.3s ease;
+        cursor: url("assets/img/mouse/mouse-f1.png"), auto;
+      }
+
+      /* Animated Glowing Blobs */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: 1;
+        opacity: 0.5;
+        animation: float 20s infinite alternate;
+        transition: all 0.5s ease;
+      }
+
+      .blob-1 {
+        width: 300px;
+        height: 300px;
+        background: var(--first-color);
+        top: -10%;
+        left: -10%;
+        animation-delay: 0s;
+      }
+
+      .blob-2 {
+        width: 400px;
+        height: 400px;
+        background: var(--second-color);
+        bottom: -15%;
+        right: -10%;
+        animation-delay: 5s;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translate(0px, 0px) scale(1) rotate(0deg);
+        }
+        50% {
+          transform: translate(100px, 80px) scale(1.2) rotate(180deg);
+        }
+        100% {
+          transform: translate(-50px, -50px) scale(0.8) rotate(360deg);
+        }
+      }
+
+      /* Star particles in dark mode */
+      .stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      body.dark .stars {
+        opacity: 0.3;
+      }
+
+      /* Error Container Card */
+      .error-container {
+        position: relative;
+        z-index: 10;
+        width: 90%;
+        max-width: 550px;
+        padding: 3rem 2rem;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 20px 40px var(--shadow-color);
+        text-align: center;
+        transform: translateY(20px);
+        animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes slideUp {
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      /* Huge 404 Text */
+      .error-code {
+        font-size: 8rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--first-color) 0%, var(--second-color) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+        display: inline-block;
+        filter: drop-shadow(0 0 15px var(--glow-color));
+        animation: pulseGlow 3s infinite alternate;
+      }
+
+      @keyframes pulseGlow {
+        0% {
+          filter: drop-shadow(0 0 8px var(--glow-color));
+        }
+        100% {
+          filter: drop-shadow(0 0 25px var(--glow-color));
+        }
+      }
+
+      /* Typography */
+      .error-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--title-color);
+        margin-bottom: 1rem;
+      }
+
+      .error-desc {
+        font-size: 1rem;
+        color: var(--text-color);
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+      }
+
+      /* Buttons & Actions */
+      .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+      }
+
+      @media (min-width: 480px) {
+        .btn-container {
+          flex-direction: row;
+        }
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        background: var(--back-btn-bg);
+        color: var(--back-btn-text);
+        font-weight: 600;
+        border-radius: 50px;
+        border: none;
+        box-shadow: 0 8px 20px var(--glow-color);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        text-decoration: none;
+        min-width: 180px;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px var(--glow-color);
+        filter: brightness(1.05);
+      }
+
+      .btn-primary:active {
+        transform: translateY(1px);
+      }
+
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        background: transparent;
+        color: var(--title-color);
+        font-weight: 600;
+        border-radius: 50px;
+        border: 2px solid var(--card-border);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        min-width: 180px;
+      }
+
+      .btn-secondary:hover {
+        background: var(--card-border);
+        transform: translateY(-2px);
+      }
+
+      /* Social Links */
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        color: var(--title-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        background: var(--first-color);
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px var(--glow-color);
+      }
+
+      /* Redirect countdown */
+      .countdown-container {
+        margin-top: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-color);
+        opacity: 0.8;
+      }
+
+      .countdown-bar {
+        width: 100%;
+        height: 4px;
+        background: var(--card-border);
+        border-radius: 2px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      .countdown-progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--first-color), var(--second-color));
+        width: 100%;
+        transition: width 1s linear;
+      }
+
+      /* Header controls for theme/lang */
+      .controls-header {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 15px;
+        z-index: 100;
+      }
+
+      .control-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        color: var(--title-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px var(--shadow-color);
+      }
+
+      .control-btn:hover {
+        transform: scale(1.05);
+        border-color: var(--first-color);
+      }
+
+      /* Responsive styling */
+      @media (max-width: 576px) {
+        .error-code {
+          font-size: 6rem;
+        }
+        .error-title {
+          font-size: 1.5rem;
+        }
+        .error-container {
+          padding: 2.5rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Theme & Language Controls -->
+    <div class="controls-header">
+      <button class="control-btn" id="langToggle" title="Change Language / Đổi Ngôn Ngữ">
+        <i class="fa-solid fa-language"></i>
+      </button>
+      <button class="control-btn" id="themeToggle" title="Toggle Theme / Đổi Giao Diện">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+
+    <!-- Animated Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Particles Background for Dark Mode -->
+    <canvas class="stars" id="starsCanvas"></canvas>
+
+    <!-- Main Content -->
+    <div class="error-container">
+      <div class="error-code">404</div>
+      <h1 class="error-title" id="errTitle">Page Not Found</h1>
+      <p class="error-desc" id="errDesc">
+        It seems you have wandered off or the page has been moved to a new address.
+      </p>
+
+      <div class="btn-container">
+        <a href="index.html" class="btn-primary" id="btnHome">
+          <i class="fa-solid fa-house-chimney"></i> Go Back Home
+        </a>
+        <button onclick="window.history.back()" class="btn-secondary" id="btnBack">
+          <i class="fa-solid fa-arrow-left"></i> Previous Page
+        </button>
+      </div>
+
+      <!-- Social Media Links -->
+      <div class="social-links">
+        <a href="https://www.facebook.com/ThaiHongLam.Info" target="_blank" class="social-icon" title="Facebook">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://github.com/thhlam77" target="_blank" class="social-icon" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://t.me/oneshlam" target="_blank" class="social-icon" title="Telegram">
+          <i class="fa-brands fa-telegram"></i>
+        </a>
+        <a href="https://www.instagram.com/1s._.hlam/" target="_blank" class="social-icon" title="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+
+      <!-- Auto redirect countdown -->
+      <div class="countdown-container">
+        <span id="countdownText">Redirecting to homepage in 15 seconds...</span>
+        <div class="countdown-bar">
+          <div class="countdown-progress" id="progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Translations dict
+      const langData = {
+        en: {
+          title: "Page Not Found",
+          desc: "It seems you have wandered off or the page has been moved to a new address.",
+          btnHome: "Go Back Home",
+          btnBack: "Previous Page",
+          countdown: "Redirecting to homepage in {seconds} seconds..."
+        },
+        vi: {
+          title: "Không Tìm Thấy Trang",
+          desc: "Có vẻ như bạn đã đi lạc hoặc trang web đã được chuyển sang địa chỉ mới.",
+          btnHome: "Quay lại Trang Chủ",
+          btnBack: "Trang Trước",
+          countdown: "Tự động quay về trang chủ sau {seconds} giây..."
+        }
+      };
+
+      // Get initial theme and language from localStorage
+      let currentLang = localStorage.getItem("language") || "en";
+      let isDarkMode = localStorage.getItem("mode") === "dark-mode";
+
+      // HTML Elements
+      const body = document.body;
+      const themeBtn = document.getElementById("themeToggle");
+      const langBtn = document.getElementById("langToggle");
+      
+      const errTitle = document.getElementById("errTitle");
+      const errDesc = document.getElementById("errDesc");
+      const btnHome = document.getElementById("btnHome");
+      const btnBack = document.getElementById("btnBack");
+      const countdownText = document.getElementById("countdownText");
+      const progressBar = document.getElementById("progress");
+
+      // Set language UI function
+      function updateLanguageUI(lang) {
+        currentLang = lang;
+        localStorage.setItem("language", lang);
+        
+        errTitle.textContent = langData[lang].title;
+        errDesc.textContent = langData[lang].desc;
+        
+        // Retain the icons
+        btnHome.innerHTML = `<i class="fa-solid fa-house-chimney"></i> ${langData[lang].btnHome}`;
+        btnBack.innerHTML = `<i class="fa-solid fa-arrow-left"></i> ${langData[lang].btnBack}`;
+        
+        updateCountdownText();
+      }
+
+      // Set theme function
+      function toggleTheme(dark) {
+        isDarkMode = dark;
+        if (dark) {
+          body.classList.add("dark");
+          themeBtn.innerHTML = `<i class="fa-solid fa-sun"></i>`;
+          themeBtn.title = "Switch to Light Mode / Sáng";
+          localStorage.setItem("mode", "dark-mode");
+        } else {
+          body.classList.remove("dark");
+          themeBtn.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+          themeBtn.title = "Switch to Dark Mode / Tối";
+          localStorage.setItem("mode", "light-mode");
+        }
+      }
+
+      // Initialize UI State
+      updateLanguageUI(currentLang);
+      toggleTheme(isDarkMode);
+
+      // Event Listeners for controls
+      themeBtn.addEventListener("click", () => {
+        toggleTheme(!isDarkMode);
+      });
+
+      langBtn.addEventListener("click", () => {
+        const nextLang = currentLang === "en" ? "vi" : "en";
+        updateLanguageUI(nextLang);
+      });
+
+      // Simple Canvas Stars Background for Dark Mode
+      const canvas = document.getElementById("starsCanvas");
+      const ctx = canvas.getContext("2d");
+      let stars = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initStars();
+      }
+
+      function initStars() {
+        stars = [];
+        const count = Math.floor((canvas.width * canvas.height) / 10000);
+        for (let i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.y || Math.random() * canvas.height,
+            size: Math.random() * 1.5 + 0.5,
+            opacity: Math.random() * 0.8 + 0.2,
+            speed: Math.random() * 0.05
+          });
+        }
+      }
+
+      function animateStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (!isDarkMode) {
+          requestAnimationFrame(animateStars);
+          return;
+        }
+
+        ctx.fillStyle = "rgba(255, 255, 255, 1)";
+        stars.forEach(star => {
+          ctx.globalAlpha = star.opacity;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Move stars slowly downwards
+          star.y += star.speed;
+          if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+          }
+        });
+        requestAnimationFrame(animateStars);
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      animateStars();
+
+      // Countdown logic
+      let secondsLeft = 15;
+      const totalSeconds = 15;
+
+      function updateCountdownText() {
+        const template = langData[currentLang].countdown;
+        countdownText.textContent = template.replace("{seconds}", secondsLeft);
+      }
+
+      const timer = setInterval(() => {
+        secondsLeft--;
+        updateCountdownText();
+        
+        // Progress bar percentage
+        const percent = (secondsLeft / totalSeconds) * 100;
+        progressBar.style.width = percent + "%";
+
+        if (secondsLeft <= 0) {
+          clearInterval(timer);
+          window.location.href = "index.html";
+        }
+      }, 1000);
+
+      // Handle custom mouse pointer movement for dynamic mouse-hover styling
+      document.addEventListener("mousemove", (e) => {
+        // Subtle offset of blobs based on mouse to give parallax depth
+        const xOffset = (e.clientX - window.innerWidth / 2) * 0.02;
+        const yOffset = (e.clientY - window.innerHeight / 2) * 0.02;
+        
+        document.querySelector(".blob-1").style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+        document.querySelector(".blob-2").style.transform = `translate(${-xOffset}px, ${-yOffset}px)`;
+      });
+    </script>
+  </body>
+</html>

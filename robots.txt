@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /llms.txt
+Allow: /assets/
+
+# Google Gemini & AI Crawlers
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+Sitemap: https://thaihonglam.id.vn/sitemap.xml
